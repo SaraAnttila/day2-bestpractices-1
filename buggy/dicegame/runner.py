@@ -15,16 +15,18 @@ class GameRunner:
     def answer(self):
         total = 0
         for die in self.dice:
-            total += 1
+            total += die.value # Changed the answer to relate to the die value
         return total
 
     @classmethod
     def run(cls):
         # Probably counts wins or something.
         # Great variable name, 10/10.
-        c = 0
+        nr_wins = 0
+        runner = cls() # Moved this out of the while-loop
+
         while True:
-            runner = cls()
+            runner.dice = Die.create_dice(5) # Added this line
 
             print("Round {}\n".format(runner.round))
 
@@ -37,24 +39,25 @@ class GameRunner:
             if guess == runner.answer():
                 print("Congrats, you can add like a 5 year old...")
                 runner.wins += 1
-                c += 1
+                nr_wins += 1
             else:
                 print("Sorry that's wrong")
                 print("The answer is: {}".format(runner.answer()))
                 print("Like seriously, how could you mess that up")
                 runner.loses += 1
-                c = 0
             print("Wins: {} Loses {}".format(runner.wins, runner.loses))
             runner.round += 1
 
-            if c == 6:
+            if nr_wins == 6:
                 print("You won... Congrats...")
                 print("The fact it took you so long is pretty sad")
                 break
 
             prompt = input("Would you like to play again?[Y/n]: ")
 
-            if prompt == 'y' or prompt == '':
+            if prompt == 'y':
                 continue
+            elif prompt == 'n': # Added this line
+                break
             else:
-                i_just_throw_an_exception()
+                i_just_throw_an_exception() # this could ofc be removed
