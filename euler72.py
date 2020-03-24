@@ -1,6 +1,9 @@
 #!/usr/bin/python
-
+"""
+Answers based on cProfile & memory_profiler. Unable to install line_profiler.
+"""
 from math import ceil,sqrt
+
 @profile
 def gen_primes(n):
     l = range(2,n)
@@ -19,7 +22,7 @@ def gen_primes(n):
     return primes
 
 @profile
-def factorize(n,primes):
+def factorize(n,primes): # could be faster
     factors = []
     init_n = n
     for p in primes:
@@ -32,7 +35,7 @@ def factorize(n,primes):
         factors.append(n)
     return factors
 
-    
+@profile
 def phi(n,primes):
     factors = factorize(n,primes)
     p = 1
@@ -58,11 +61,15 @@ def fast_phi(n,primes):
             phi *= (factors[i]-1)
     return phi
 
-primes = gen_primes(1000)
-m = 10000
-#m = 8
-fraq = 0
-for i in range(2,m+1):
-    fraq += fast_phi(i,primes)
+@profile
+def do():
+    primes = gen_primes(1000) # memory #1
+    m = 10000
+    #m = 8
+    fraq = 0
+    for i in range(2,m+1):
+        fraq += fast_phi(i,primes)
 
-print(fraq)
+    print(fraq)
+
+do()
